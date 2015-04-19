@@ -16,12 +16,13 @@ public class PriceFactory {
 			if(prices.containsKey(amount))
 				return prices.get(amount);
 			else{
-				prices.put(amount, new LimitPrice(amount));
-				return new LimitPrice(amount);
+				Price price = new LimitPrice(amount);
+				prices.put(amount, price);
+				return price;
 			}
 		}
 		catch(NumberFormatException e){
-			throw new InvalidPriceOperation();
+			throw new InvalidPriceOperation("Invalid price format");
 		}
 	}
 	
