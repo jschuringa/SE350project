@@ -71,7 +71,6 @@ public class Order implements Tradable {
 				|| this.cancelledVolume > newCancelledVolume || newCancelledVolume < 0)
 			throw new InvalidTradableOperation();
 		this.cancelledVolume = newCancelledVolume;
-		this.remainingVolume -= newCancelledVolume;
 	}
 
 	public void setRemainingVolume(int newRemainingVolume) throws InvalidTradableOperation {

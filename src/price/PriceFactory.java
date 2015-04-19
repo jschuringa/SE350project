@@ -13,12 +13,11 @@ public class PriceFactory {
 		try{
 			double tempAmount = Double.valueOf(value).doubleValue();
 			long amount = (long) (tempAmount * 100.0);
-			//Long amountObj = Long.valueOf(amount);
 			if(prices.containsKey(amount))
 				return prices.get(amount);
 			else{
-				prices.put(amount, new Price(amount));
-				return new Price(amount);
+				prices.put(amount, new LimitPrice(amount));
+				return new LimitPrice(amount);
 			}
 		}
 		catch(NumberFormatException e){
@@ -27,12 +26,11 @@ public class PriceFactory {
 	}
 	
 	public static Price makeLimitPrice(long value){
-		Long valueObj = Long.valueOf(value);
-		if(prices.containsKey(Long.valueOf(valueObj)))
-			return prices.get(valueObj);
+		if(prices.containsKey(value))
+			return prices.get(value);
 		else{
-			prices.put(valueObj, new Price(value));
-			return new Price(value);
+			prices.put(value, new LimitPrice(value));
+			return new LimitPrice(value);
 		}
 	}
 	
