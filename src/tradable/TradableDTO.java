@@ -9,9 +9,23 @@ public class TradableDTO {
 	public int remainingVolume;
 	public int cancelledVolume;
 	public String user;
-	public String side;
+	public BookSide side;
 	public boolean isQuote;
 	public String id;
+	
+	public TradableDTO(String product2, Price price2, int originalVolume2,
+			int remainingVolume2, int cancelledVolume2, String user2,
+			BookSide side2, boolean quote, String id2) {
+		this.product = product2;
+		this.price = price2;
+		this.originalVolume = originalVolume2;
+		this.remainingVolume = remainingVolume2;
+		this.cancelledVolume = cancelledVolume2;
+		this.user = user2;
+		this.side = side2;
+		this.isQuote = quote;
+		this.id = id2;
+	}
 	
 	public TradableDTO(String product2, Price price2, int originalVolume2,
 			int remainingVolume2, int cancelledVolume2, String user2,
@@ -22,7 +36,10 @@ public class TradableDTO {
 		this.remainingVolume = remainingVolume2;
 		this.cancelledVolume = cancelledVolume2;
 		this.user = user2;
-		this.side = side2;
+		if(side2.equalsIgnoreCase("BUY"))
+			this.side = BookSide.BUY;
+		else if(side2.equalsIgnoreCase("SELL"))
+			this.side = BookSide.SELL;
 		this.isQuote = quote;
 		this.id = id2;
 	}

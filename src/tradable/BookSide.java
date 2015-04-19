@@ -1,5 +1,5 @@
 package tradable;
 
-public class BookSide {
-
+public enum BookSide {
+	BUY, SELL
 }

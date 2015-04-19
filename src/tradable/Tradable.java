@@ -1,5 +1,6 @@
 package tradable;
 
+import exception.InvalidTradableOperation;
 import price.Price;
 
 public interface Tradable {
@@ -13,13 +14,13 @@ public interface Tradable {
 	
 	int getCancelledVolume();
 	
-	void setCancelledVolume(int newCancelledVolume);
+	void setCancelledVolume(int newCancelledVolume) throws InvalidTradableOperation;
 	
-	void setRemainingVolume(int newRemainingVolume);
+	void setRemainingVolume(int newRemainingVolume)throws InvalidTradableOperation;
 	
 	String getUser();
 	
-	String getSide();
+	BookSide getSide();
 	
 	boolean isQuote();
 	

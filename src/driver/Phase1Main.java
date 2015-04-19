@@ -3,6 +3,7 @@ package driver;
 import java.util.ArrayList;
 
 import exception.InvalidPriceOperation;
+import exception.InvalidTradableOperation;
 import price.Price;
 import price.PriceFactory;
 import tradable.Quote;
@@ -96,8 +97,13 @@ public class Phase1Main {
 
         
         System.out.println("8) Display the individual Quote Sides of the new Quote object:");
-        System.out.println("\tQuoteSide's toString: " + quote1.getQuoteSide("BUY"));
-        System.out.println("\tQuoteSide's toString: " + quote1.getQuoteSide("SELL") + "\n");
+        try {
+			System.out.println("\tQuoteSide's toString: " + quote1.getQuoteSide("BUY"));
+			System.out.println("\tQuoteSide's toString: " + quote1.getQuoteSide("SELL") + "\n");
+		} catch (InvalidTradableOperation e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 
         
         try {
