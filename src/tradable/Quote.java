@@ -21,7 +21,7 @@ public class Quote {
 		return this.product;
 	}
 	
-	public QuoteSide getQuoteSide(BookSide sideIn){
+	public QuoteSide getQuoteSide(String side){
 		
 	}
 	

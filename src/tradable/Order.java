@@ -2,10 +2,20 @@ package tradable;
 
 import price.Price;
 
-class Order implements Tradable {
+public class Order implements Tradable {
 	
 	Order(String userName, String productSymbol, Price orderPrice, int originalVolume, BookSide side){
 		 
+	}
+
+	public Order(String userName, String productSymbol, Price makeLimitPrice,
+			int originalVolume, String string) {
+		// TODO Auto-generated constructor stub
+	}
+
+	public Order(String userName, String productSymbol, Price makeLimitPrice,
+			int originalVolume, String string) {
+		// TODO Auto-generated constructor stub
 	}
 
 	public String getProduct() {

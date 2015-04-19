@@ -1,23 +1,36 @@
 package price;
 
-import java.util.regex.Pattern;
+import java.util.HashMap;
+
+import exception.InvalidPriceOperation;
 
 public class PriceFactory {
-	public static Price makeLimitPrice(String value) throws Exception{
-		//Pattern p = Pattern.compile("^[\$|-\$|\$-|-]?[0-9]");
-		value.replaceAll("[$,]", "");
+	private static HashMap<Long,Price> prices = new HashMap<Long,Price>();
+
+	public static Price makeLimitPrice(String value) throws InvalidPriceOperation {
+		value = value.replaceAll("[$,]", "");
 		try{
-			double amount = Double.valueOf(value).doubleValue();
-			amount = amount * 100.0;
-			return new Price((long) amount);
+			double tempAmount = Double.valueOf(value).doubleValue();
+			long amount = (long) (tempAmount * 100.0);
+			if(prices.containsKey(amount))
+				return prices.get(amount);
+			else{
+				prices.put(amount, new Price(amount));
+				return new Price(amount);
+			}
 		}
 		catch(NumberFormatException e){
-			throw new Exception();
+			throw new InvalidPriceOperation();
 		}
 	}
 	
 	public static Price makeLimitPrice(long value){
-		return new Price(value);
+		if(prices.containsKey(value))
+			return prices.get(value);
+		else{
+			prices.put(value, new Price(value));
+			return new Price(value);
+		}
 	}
 	
 	public static Price makeMarketPrice(){
