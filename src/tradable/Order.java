@@ -15,8 +15,10 @@ public class Order implements Tradable {
 
 	public Order(String userName, String productSymbol, Price makeLimitPrice,
 			int originalVolume, BookSide side) throws InvalidTradableOperation {
-		if(originalVolume <= 0 || side == null)
-			throw new InvalidTradableOperation();
+		if(originalVolume <= 0)
+			throw new InvalidTradableOperation("Volume must be positive value");
+		if(side == null)
+			throw new InvalidTradableOperation("Invalid side");
 		this.userName = userName;
 		this.product = productSymbol;
 		this.price = makeLimitPrice;
@@ -30,7 +32,7 @@ public class Order implements Tradable {
 	public Order(String userName, String productSymbol, Price makeLimitPrice,
 			int originalVolume, String side) throws InvalidTradableOperation {
 		if(originalVolume <= 0)
-			throw new InvalidTradableOperation();
+			throw new InvalidTradableOperation("Volume must be positive value");
 		if(side.equalsIgnoreCase("BUY"))
 			this.side = BookSide.BUY;
 		else if(side.equalsIgnoreCase("SELL"))
@@ -69,14 +71,14 @@ public class Order implements Tradable {
 	public void setCancelledVolume(int newCancelledVolume) throws InvalidTradableOperation {
 		if(this.remainingVolume + newCancelledVolume > this.originalVolume 
 				|| this.cancelledVolume > newCancelledVolume || newCancelledVolume < 0)
-			throw new InvalidTradableOperation();
+			throw new InvalidTradableOperation("Invalid Cancelled Volume");
 		this.cancelledVolume = newCancelledVolume;
 	}
 
 	public void setRemainingVolume(int newRemainingVolume) throws InvalidTradableOperation {
 		if(this.remainingVolume < newRemainingVolume 
 				|| this.cancelledVolume + newRemainingVolume > this.originalVolume || newRemainingVolume < 0)
-			throw new InvalidTradableOperation();
+			throw new InvalidTradableOperation("Invalid Remaining Volume");
 		this.remainingVolume = newRemainingVolume;
 	}
 

@@ -31,7 +31,7 @@ public class Quote {
 		else if(side.equalsIgnoreCase("SELL"))
 			return this.SELL;
 		else
-			throw new InvalidTradableOperation();
+			throw new InvalidTradableOperation("Side not found: " + side);
 	}
 	
 	public QuoteSide getQuoteSide(BookSide side) throws InvalidTradableOperation{
@@ -40,7 +40,7 @@ public class Quote {
 		else if(side.equals(BookSide.SELL))
 			return this.SELL;
 		else
-			throw new InvalidTradableOperation();
+			throw new InvalidTradableOperation("Side not found: " + side.toString());
 	}
 	
 	public String toString(){
