@@ -22,7 +22,7 @@ public class Phase1Main {
     public static void main(String[] args) {
 
         testPrices();
-       // testTradables();
+        testTradables();
     }
 
     
@@ -132,6 +132,7 @@ public class Phase1Main {
 	        testPriceHolder.add(PriceFactory.makeLimitPrice("12"));
 	        testPriceHolder.add(PriceFactory.makeLimitPrice("90."));
 	        testPriceHolder.add(PriceFactory.makeLimitPrice("14.5"));
+	        testPriceHolder.add(PriceFactory.makeLimitPrice("900."));
 	        testPriceHolder.add(PriceFactory.makeMarketPrice());
 	        System.out.println("   " + testPriceHolder);
 	        System.out.println();
@@ -152,7 +153,8 @@ public class Phase1Main {
         System.out.format(format, "\"$12.00\"", testPriceHolder.get(5), testPriceHolder.get(5).toString().equals("$12.00") ? "PASS" : "FAIL");
         System.out.format(format, "\"$90.00\"", testPriceHolder.get(6), testPriceHolder.get(6).toString().equals("$90.00") ? "PASS" : "FAIL");
         System.out.format(format, "\"$14.50\"", testPriceHolder.get(7), testPriceHolder.get(7).toString().equals("$14.50") ? "PASS" : "FAIL");
-        System.out.format(format, "\"MKT\"", testPriceHolder.get(8), testPriceHolder.get(8).toString().equals("MKT") ? "PASS" : "FAIL");
+        System.out.format(format, "\"$900.00\"", testPriceHolder.get(8), testPriceHolder.get(8).toString().equals("$900.00") ? "PASS" : "FAIL");
+        System.out.format(format, "\"MKT\"", testPriceHolder.get(9), testPriceHolder.get(9).toString().equals("MKT") ? "PASS" : "FAIL");
         System.out.println();
     }
 
@@ -196,19 +198,19 @@ public class Phase1Main {
             System.out.println("FAILED: " + ex.getMessage());
         }
         try {
-            testPriceHolder.get(8).add(testPriceHolder.get(0));
+            testPriceHolder.get(9).add(testPriceHolder.get(0));
             System.out.println("   FAIL: Adding a LIMIT price to a MARKET Price succeeded: (" + testPriceHolder.get(8) + " + " + testPriceHolder.get(0) + ")");
         } catch (InvalidPriceOperation ex) {
             System.out.println("   PASS: " + ex.getMessage() + ": (" + testPriceHolder.get(8) + " + " + testPriceHolder.get(0) + ")");
         }
         try {
-            testPriceHolder.get(8).subtract(testPriceHolder.get(0));
+            testPriceHolder.get(9).subtract(testPriceHolder.get(0));
             System.out.println("   FAIL: Subtracting a LIMIT price from a MARKET Price succeeded: (" + testPriceHolder.get(8) + " - " + testPriceHolder.get(0) + ")");
         } catch (InvalidPriceOperation ex) {
             System.out.println("   PASS: " + ex.getMessage() + ": (" + testPriceHolder.get(8) + " - " + testPriceHolder.get(0) + ")");
         }
         try {
-            testPriceHolder.get(8).multiply(10);
+            testPriceHolder.get(9).multiply(10);
             System.out.println("   FAIL: Multiplying a MARKET price succeeded: (" + testPriceHolder.get(8) + " + 10)");
         } catch (InvalidPriceOperation ex) {
             System.out.println("   PASS: " + ex.getMessage() + ": (" + testPriceHolder.get(8) + " * 10)");
@@ -229,7 +231,7 @@ public class Phase1Main {
         System.out.format(format, testPriceHolder.get(5), testPriceHolder.get(5).isNegative() ? "    FAIL" : "    PASS", testPriceHolder.get(5).isMarket() ? "    FAIL" : "    PASS");
         System.out.format(format, testPriceHolder.get(6), testPriceHolder.get(6).isNegative() ? "    FAIL" : "    PASS", testPriceHolder.get(6).isMarket() ? "    FAIL" : "    PASS");
         System.out.format(format, testPriceHolder.get(7), testPriceHolder.get(7).isNegative() ? "    FAIL" : "    PASS", testPriceHolder.get(7).isMarket() ? "    FAIL" : "    PASS");
-        System.out.format(format, testPriceHolder.get(8), testPriceHolder.get(8).isNegative() ? "    FAIL" : "    PASS", testPriceHolder.get(8).isMarket() ? "    PASS" : "    FAIL");
+        System.out.format(format, testPriceHolder.get(9), testPriceHolder.get(9).isNegative() ? "    FAIL" : "    PASS", testPriceHolder.get(9).isMarket() ? "    PASS" : "    FAIL");
         System.out.println();
     }
 
@@ -267,8 +269,8 @@ public class Phase1Main {
                 testPriceHolder.get(7).greaterOrEqual(testPrice) ? "    PASS" : "    FAIL", testPriceHolder.get(7).greaterThan(testPrice) ? "    FAIL" : "    PASS",
                 testPriceHolder.get(7).lessOrEqual(testPrice) ? "    PASS" : "    FAIL", testPriceHolder.get(7).lessThan(testPrice) ? "    FAIL" : "    PASS");
         System.out.format(format, testPriceHolder.get(8),
-                testPriceHolder.get(8).greaterOrEqual(testPrice) ? "    FAIL" : "    PASS", testPriceHolder.get(8).greaterThan(testPrice) ? "    FAIL" : "    PASS",
-                testPriceHolder.get(8).lessOrEqual(testPrice) ? "    FAIL" : "    PASS", testPriceHolder.get(8).lessThan(testPrice) ? "    FAIL" : "    PASS");
+                testPriceHolder.get(9).greaterOrEqual(testPrice) ? "    FAIL" : "    PASS", testPriceHolder.get(9).greaterThan(testPrice) ? "    FAIL" : "    PASS",
+                testPriceHolder.get(9).lessOrEqual(testPrice) ? "    FAIL" : "    PASS", testPriceHolder.get(9).lessThan(testPrice) ? "    FAIL" : "    PASS");
         System.out.println();
 
     }
@@ -283,7 +285,7 @@ public class Phase1Main {
 	        System.out.format(format, testPriceHolder.get(1), p1, testPriceHolder.get(1) == p1 ? "FAIL" : "PASS");
 	
 	        p1 = PriceFactory.makeMarketPrice();
-	        System.out.format(format, testPriceHolder.get(8), p1, testPriceHolder.get(8) == p1 ? "PASS" : "FAIL");
+	        System.out.format(format, testPriceHolder.get(9), p1, testPriceHolder.get(9) == p1 ? "PASS" : "FAIL");
 	        System.out.format(format, testPriceHolder.get(1), p1, testPriceHolder.get(1) == p1 ? "FAIL" : "PASS");
 		} catch (InvalidPriceOperation e) {
 			// TODO Auto-generated catch block

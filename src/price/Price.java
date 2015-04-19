@@ -99,8 +99,34 @@ public class Price {
 		if(isMarket())
 			return "MKT";
 		StringBuilder string = new StringBuilder("$");
-		string.append(Long.toString(value));
-		string.insert(string.length()-2, ".");
+		string.append(value);
+		int len = string.length();
+		if(this.isNegative()){
+			if(len == 3)
+				string.insert(2,"0.0");
+			else if(len == 4)
+				string.insert(2,"0.");
+			else{
+				int decimal = len-2;
+				string.insert(decimal, ".");
+				for(int i = decimal - 3; i > 2; i = i-3){
+					string.insert(i, ",");
+				}
+			}
+		}
+		else{
+			if(len == 2)
+				string.insert(1,"0.0");
+			else if(len == 3)
+				string.insert(1,"0.");
+			else{
+				int decimal = len-2;
+				string.insert(decimal, ".");
+				for(int i = decimal - 3; i > 1; i = i-3){
+					string.insert(i, ",");
+				}
+			}
+		}
 		return string.toString();
 	}
 	

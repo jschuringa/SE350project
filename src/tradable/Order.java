@@ -3,78 +3,94 @@ package tradable;
 import price.Price;
 
 public class Order implements Tradable {
+	private final String userName;
+	private final String product;
+	private final String id;
+	private final String side;
+	private final Price price;
+	private int originalVolume;
+	private int remainingVolume;
+	private int cancelledVolume;
 	
-	Order(String userName, String productSymbol, Price orderPrice, int originalVolume, BookSide side){
-		 
-	}
+//	public Order(String userName, String productSymbol, Price orderPrice, int originalVolume, BookSide side){
+//		 
+//	}
 
 	public Order(String userName, String productSymbol, Price makeLimitPrice,
-			int originalVolume, String string) {
-		// TODO Auto-generated constructor stub
-	}
-
-	public Order(String userName, String productSymbol, Price makeLimitPrice,
-			int originalVolume, String string) {
-		// TODO Auto-generated constructor stub
+			int originalVolume, String side) {
+		this.userName = userName;
+		this.product = productSymbol;
+		this.price = makeLimitPrice;
+		this.originalVolume = originalVolume;
+		this.remainingVolume = this.originalVolume;
+		this.cancelledVolume = 0;
+		this.side = side;
+		this.id = this.userName + this.product + this.price.toString() + System.nanoTime();
 	}
 
 	public String getProduct() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.product;
 	}
 
 	public Price getPrice() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.price;
 	}
 
 	public int getOriginalVolume() {
-		// TODO Auto-generated method stub
-		return 0;
+		return this.originalVolume;
 	}
 
 	public int getRemainingVolume() {
-		// TODO Auto-generated method stub
-		return 0;
+		return this.remainingVolume;
 	}
 
 	public int getCancelledVolume() {
-		// TODO Auto-generated method stub
-		return 0;
+		return this.cancelledVolume;
 	}
 
 	public void setCancelledVolume(int newCancelledVolume) {
-		// TODO Auto-generated method stub
+		this.cancelledVolume = newCancelledVolume;
 
 	}
 
 	public void setRemainingVolume(int newRemainingVolume) {
-		// TODO Auto-generated method stub
+		this.remainingVolume = newRemainingVolume;
 
 	}
 
 	public String getUser() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.userName;
 	}
 
 	public String getSide() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.side;
 	}
 
 	public boolean isQuote() {
-		// TODO Auto-generated method stub
-		return false;
+		return this.isQuote();
 	}
 
 	public String getId() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.id;
 	}
 	
 	public String toString(){
-		
+		StringBuilder string = new StringBuilder(this.userName);
+		string.append(" order: ");
+		string.append(this.side);
+		string.append(" ");
+		string.append(this.remainingVolume);
+		string.append(" ");
+		string.append(this.product);
+		string.append(" at ");
+		string.append(this.price.toString());
+		string.append(" (Original Vol: ");
+		string.append(this.originalVolume);
+		string.append(", CXL'd Vol: ");
+		string.append(this.cancelledVolume);
+		string.append("), ID: ");
+		string.append(this.id);
+		return string.toString();
 	}
 
 }
