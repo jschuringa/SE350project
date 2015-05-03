@@ -1,5 +1,8 @@
 package tradable;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import exception.InvalidTradableOperation;
 import price.Price;
 
@@ -9,7 +12,7 @@ public class Order implements Tradable {
 	private final String id;
 	private final BookSide side;
 	private final Price price;
-	private int originalVolume;
+	private final int originalVolume;
 	private int remainingVolume;
 	private int cancelledVolume;
 
@@ -17,15 +20,13 @@ public class Order implements Tradable {
 			int originalVolume, BookSide side) throws InvalidTradableOperation {
 		if(originalVolume <= 0)
 			throw new InvalidTradableOperation("Volume must be positive value");
-		if(side == null)
-			throw new InvalidTradableOperation("Invalid side");
-		this.userName = userName;
-		this.product = productSymbol;
-		this.price = makeLimitPrice;
+		this.userName = this.setUser(userName);
+		this.product = this.setProduct(productSymbol);
+		this.price = this.setPrice(makeLimitPrice);
 		this.originalVolume = originalVolume;
 		this.remainingVolume = this.originalVolume;
 		this.cancelledVolume = 0;
-		this.side = side;
+		this.side = this.setSide(side);
 		this.id = this.userName + this.product + this.price.toString() + System.nanoTime();
 	}
 	
@@ -33,27 +34,44 @@ public class Order implements Tradable {
 			int originalVolume, String side) throws InvalidTradableOperation {
 		if(originalVolume <= 0)
 			throw new InvalidTradableOperation("Volume must be positive value");
-		if(side.equalsIgnoreCase("BUY"))
-			this.side = BookSide.BUY;
-		else if(side.equalsIgnoreCase("SELL"))
-			this.side = BookSide.SELL;
-		else
-			throw new InvalidTradableOperation();
-		this.userName = userName;
-		this.product = productSymbol;
-		this.price = makeLimitPrice;
+		this.userName = this.setUser(userName);
+		this.product = this.setProduct(productSymbol);
+		this.price = this.setPrice(makeLimitPrice);
 		this.originalVolume = originalVolume;
 		this.remainingVolume = this.originalVolume;
 		this.cancelledVolume = 0;
+		this.side = this.setSide(side);
 		this.id = this.userName + this.product + this.price.toString() + System.nanoTime();
 	}
 
 	public String getProduct() {
 		return this.product;
 	}
+	
+	private String setProduct(String productName) throws InvalidTradableOperation {
+		Pattern p = Pattern.compile("[a-zA-Z]{1,4}");
+		Matcher m = p.matcher(productName);
+		if(productName != null && m.matches() ){
+			return productName;
+		}
+		else{
+			throw new InvalidTradableOperation(productName + " is invalid");
+		}
+	}
 
 	public Price getPrice() {
 		return this.price;
+	}
+	
+	private Price setPrice(Price p) throws InvalidTradableOperation{
+		if(p == null)
+			throw new InvalidTradableOperation("Price cannot be null");
+		if(!p.isNegative()){
+			return p;
+		}
+		else{
+			throw new InvalidTradableOperation("Price is invalid");
+		}
 	}
 
 	public int getOriginalVolume() {
@@ -85,9 +103,38 @@ public class Order implements Tradable {
 	public String getUser() {
 		return this.userName;
 	}
+	
+	private String setUser(String userName) throws InvalidTradableOperation{
+		Pattern p = Pattern.compile("[a-zA-Z][a-zA-Z0-9]*");
+		Matcher m = p.matcher(userName);
+		if(userName != null && m.matches() ){
+			return userName;
+		}
+		else{
+			throw new InvalidTradableOperation(userName + " is invalid");
+		}
+	}
 
 	public BookSide getSide() {
 		return this.side;
+	}
+	
+	private BookSide setSide(BookSide side) throws InvalidTradableOperation{
+		if(side != null)
+			return side;
+		else
+			throw new InvalidTradableOperation("Side cannot be null");
+	}
+	
+	private BookSide setSide(String side) throws InvalidTradableOperation{
+		if(side == null)
+			throw new InvalidTradableOperation("Side cannot be null");
+		if(side.equalsIgnoreCase("BUY"))
+			return setSide(BookSide.BUY);
+		else if(side.equalsIgnoreCase("SELL"))
+			return setSide(BookSide.SELL);
+		else
+			throw new InvalidTradableOperation("Invalid value for side");
 	}
 
 	public boolean isQuote() {
