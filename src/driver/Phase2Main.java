@@ -262,8 +262,6 @@ public class Phase2Main {
             System.out.println(); 
             
             MessagePublisher.getInstance().subscribe(u2, "SBUX");
-            MessagePublisher.getInstance().subscribe(u3, "GE");
-            MessagePublisher.getInstance().subscribe(u2, "GE");
             System.out.println("28) Send a MarketMessage. REX and ANN are MessagePublisher subscribers so REX & Ann get the message.");
             MessagePublisher.getInstance().publishMarketMessage(MarketMessageFactory.makeMarketMessage(MarketState.OPEN));
             System.out.println(); 
