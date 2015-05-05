@@ -10,7 +10,7 @@ import messages.FillMessage;
 import messages.MarketMessage;
 import client.User;
 
-public class MessagePublisher extends Publisher {
+public final class MessagePublisher extends Publisher {
 	private volatile HashMap<String, ArrayList<User>> subscriptions = super.getSubscriptions();
 	private static MessagePublisher instance;
 	

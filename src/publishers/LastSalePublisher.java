@@ -13,6 +13,7 @@ public final class LastSalePublisher extends Publisher {
 	private volatile HashMap<String, ArrayList<User>> subscriptions = super.getSubscriptions();
 	private static LastSalePublisher instance;
 	
+	
 	private LastSalePublisher(){}
 	
 	public static LastSalePublisher getLastSaleInstance(){
@@ -34,7 +35,9 @@ public final class LastSalePublisher extends Publisher {
 					u.acceptLastSale(product, p, v);
 				}
 			}
-			TickerPublisher.publishTicker(product, p);
+			TickerPublisher tmp = TickerPublisher.getInstance();
+			tmp.publishTicker(product, p);
 		}
 	}
+	
 }
