@@ -86,7 +86,7 @@ public class LimitPrice extends Price{
 	public boolean isNegative(){
 		return this.value < 0;
 	}
-	
+
 	public String toString(){
 		StringBuilder string = new StringBuilder("$");
 		string.append(value);

@@ -56,6 +56,5 @@ public class Price {
 	public String toString(){
 		return "MKT";
 		
-	}
-	
+	}	
 }
