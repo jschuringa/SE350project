@@ -16,7 +16,7 @@ public final class LastSalePublisher extends Publisher {
 	
 	private LastSalePublisher(){}
 	
-	public static LastSalePublisher getLastSaleInstance(){
+	public static LastSalePublisher getInstance(){
 		if (instance == null)
 			synchronized(LastSalePublisher.class){
 				if (instance == null)

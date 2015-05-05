@@ -8,7 +8,11 @@ import client.User;
 import exception.InvalidPriceOperation;
 import price.Price;
 import price.PriceFactory;
+import publishers.CurrentMarketPublisher;
+import publishers.LastSalePublisher;
+import publishers.MarketDataDTO;
 import publishers.MessagePublisher;
+import publishers.TickerPublisher;
 import tradable.BookSide;
 
 // HERE you should add any imports for your classes that you need to make this class compile.
@@ -23,9 +27,9 @@ public class Phase2Main {
         performLegacyTests();
 
         makeTestUsers();
-        //testCurrentMarketPublisher();
-        //testTickerPublisher();
-        //testLastSalePublisher();
+        testCurrentMarketPublisher();
+        testTickerPublisher();
+        testLastSalePublisher();
         testMessagePublisher();
 
     }
@@ -67,7 +71,7 @@ public class Phase2Main {
         u4 = new UserImpl("BEN");
     }
     
-    /*private static void testCurrentMarketPublisher() {
+    private static void testCurrentMarketPublisher() {
         try {
             CurrentMarketPublisher.getInstance().subscribe(u1, "SBUX");
             CurrentMarketPublisher.getInstance().subscribe(u2, "IBM");
@@ -208,7 +212,7 @@ public class Phase2Main {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-    }*/
+    }
 
     private static void testMessagePublisher() {
 
