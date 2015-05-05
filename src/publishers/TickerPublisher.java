@@ -8,7 +8,6 @@ import price.Price;
 import price.PriceFactory;
 
 public final class TickerPublisher extends Publisher {
-	private volatile HashMap<String, ArrayList<User>> subscriptions = super.getSubscriptions();
 	private volatile HashMap<String, Price> tickermap = new HashMap<String, Price>();
 	private static TickerPublisher instance;
 
@@ -27,11 +26,12 @@ public final class TickerPublisher extends Publisher {
 		if(p == null){
 			p = PriceFactory.makeLimitPrice(0);
 		}
-		if(subscriptions.containsKey(product)){
+		HashMap<String, ArrayList<User>> subs = super.getSubscriptions();
+		if(subs.containsKey(product)){
 			if(tickermap.containsKey(product)){
 				if(tickermap.containsKey(product)){
 					Price oldvalue = tickermap.get(product);
-					for(User u : subscriptions.get(product)){
+					for(User u : subs.get(product)){
 						if(oldvalue.equals(p)){
 							u.acceptTicker(product, p, '=');
 						}
@@ -44,7 +44,7 @@ public final class TickerPublisher extends Publisher {
 					}
 				}
 			} else {
-				for(User u : subscriptions.get(product)){
+				for(User u : subs.get(product)){
 					u.acceptTicker(product, p, ' ');
 				}
 			}
@@ -53,7 +53,7 @@ public final class TickerPublisher extends Publisher {
 	}
 	
 	synchronized HashMap<String, ArrayList<User>> getSubscriptions(){
-		HashMap<String, ArrayList<User>> temp = new HashMap<String, ArrayList<User>>(subscriptions);
+		HashMap<String, ArrayList<User>> temp = new HashMap<String, ArrayList<User>>(super.getSubscriptions());
 		return temp;
 	}
 }

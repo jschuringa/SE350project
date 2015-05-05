@@ -6,7 +6,6 @@ import client.User;
 
 public final class CurrentMarketPublisher extends Publisher {
 	
-	private volatile HashMap<String, ArrayList<User>> subscriptions = super.getSubscriptions();
 	private static CurrentMarketPublisher instance;
 	
 	private CurrentMarketPublisher(){}
@@ -25,8 +24,9 @@ public final class CurrentMarketPublisher extends Publisher {
 	
 	public synchronized void publishCurrentMarket(MarketDataDTO md)
 	{
-		if(subscriptions.containsKey(md.product)){
-			for(User u : subscriptions.get(md.product)){
+		HashMap<String, ArrayList<User>> subs = super.getSubscriptions();
+		if(subs.containsKey(md.product)){
+			for(User u : subs.get(md.product)){
 				u.acceptCurrentMarket(md.product, md.buyPrice, md.buyVolume, md.sellPrice, md.sellVolume);
 			}
 
@@ -36,7 +36,7 @@ public final class CurrentMarketPublisher extends Publisher {
 	
 	
 	synchronized HashMap<String, ArrayList<User>> getSubscriptions(){
-		HashMap<String, ArrayList<User>> temp = new HashMap<String, ArrayList<User>>(subscriptions);
+		HashMap<String, ArrayList<User>> temp = new HashMap<String, ArrayList<User>>(super.getSubscriptions());
 		return temp;
 	}
 

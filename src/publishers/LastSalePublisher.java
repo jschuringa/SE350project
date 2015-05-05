@@ -10,7 +10,6 @@ import price.PriceFactory;
 
 
 public final class LastSalePublisher extends Publisher {
-	private volatile HashMap<String, ArrayList<User>> subscriptions = super.getSubscriptions();
 	private static LastSalePublisher instance;
 	
 	
@@ -27,8 +26,9 @@ public final class LastSalePublisher extends Publisher {
 	
 	
 	public synchronized void publishLastSale(String product, Price p, int v){
-		if(subscriptions.containsKey(product)){
-			for(User u : subscriptions.get(product)){
+		HashMap<String, ArrayList<User>> subs = super.getSubscriptions();
+		if(subs.containsKey(product)){
+			for(User u : subs.get(product)){
 				if(p == null){
 					u.acceptLastSale(product, PriceFactory.makeLimitPrice(0), v);
 				} else {
@@ -38,6 +38,11 @@ public final class LastSalePublisher extends Publisher {
 			TickerPublisher tmp = TickerPublisher.getInstance();
 			tmp.publishTicker(product, p);
 		}
+	}
+	
+	synchronized HashMap<String, ArrayList<User>> getSubscriptions(){
+		HashMap<String, ArrayList<User>> temp = new HashMap<String, ArrayList<User>>(super.getSubscriptions());
+		return temp;
 	}
 	
 }

@@ -11,7 +11,6 @@ import messages.MarketMessage;
 import client.User;
 
 public final class MessagePublisher extends Publisher {
-	private volatile HashMap<String, ArrayList<User>> subscriptions = super.getSubscriptions();
 	private static MessagePublisher instance;
 	
 	private MessagePublisher(){}
@@ -27,8 +26,9 @@ public final class MessagePublisher extends Publisher {
 	
 	
 	public synchronized void publishCancel(CancelMessage cm){
-		if(this.subscriptions.containsKey(cm.getProduct())){
-			for(User u : subscriptions.get(cm.getProduct())){
+		HashMap<String, ArrayList<User>> subs = super.getSubscriptions();
+		if(subs.containsKey(cm.getProduct())){
+			for(User u : subs.get(cm.getProduct())){
 				if(u.getUserName().equals(cm.getUser())){
 					u.acceptMessage(cm);
 					return;
@@ -38,8 +38,9 @@ public final class MessagePublisher extends Publisher {
 	}
 	
 	public synchronized void publishFill(FillMessage fm) {
-		if(subscriptions.containsKey(fm.getProduct())){
-			for(User u : subscriptions.get(fm.getProduct())){
+		HashMap<String, ArrayList<User>> subs =  super.getSubscriptions();
+		if(subs.containsKey(fm.getProduct())){
+			for(User u : subs.get(fm.getProduct())){
 				if(u.getUserName().equals(fm.getUser())){
 					u.acceptMessage(fm);
 					break;
@@ -49,7 +50,8 @@ public final class MessagePublisher extends Publisher {
 	}
 	
 	public synchronized void publishMarketMessage(MarketMessage mm) {
-		Collection<ArrayList<User>> users = subscriptions.values();
+		HashMap<String, ArrayList<User>> subs = super.getSubscriptions();
+		Collection<ArrayList<User>> users = subs.values();
 		HashSet<User> usersSeen = new HashSet<User>();
 		if(!users.isEmpty()){
 			for(ArrayList<User> list : users){
@@ -66,7 +68,7 @@ public final class MessagePublisher extends Publisher {
 	}
 	
 	synchronized HashMap<String, ArrayList<User>> getSubscriptions(){
-		HashMap<String, ArrayList<User>> temp = new HashMap<String, ArrayList<User>>(subscriptions);
+		HashMap<String, ArrayList<User>> temp = new HashMap<String, ArrayList<User>>(super.getSubscriptions());
 		return temp;
 	}
 
