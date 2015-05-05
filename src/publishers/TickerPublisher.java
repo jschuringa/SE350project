@@ -9,7 +9,7 @@ import price.PriceFactory;
 
 public final class TickerPublisher extends Publisher {
 	private volatile HashMap<String, ArrayList<User>> subscriptions = super.getSubscriptions();
-	private volatile static HashMap<String, Price> tickermap = new HashMap<String, Price>();
+	private volatile HashMap<String, Price> tickermap = new HashMap<String, Price>();
 	private static TickerPublisher instance;
 
 	private TickerPublisher(){}
@@ -28,26 +28,28 @@ public final class TickerPublisher extends Publisher {
 			p = PriceFactory.makeLimitPrice(0);
 		}
 		if(subscriptions.containsKey(product)){
-			for(User u : subscriptions.get(product)){
+			if(tickermap.containsKey(product)){
 				if(tickermap.containsKey(product)){
 					Price oldvalue = tickermap.get(product);
-					if(oldvalue.equals(p)){
-						u.acceptTicker(product, p, '=');
-						break;
+					for(User u : subscriptions.get(product)){
+						if(oldvalue.equals(p)){
+							u.acceptTicker(product, p, '=');
+						}
+						else if(oldvalue.greaterThan(p)){
+							u.acceptTicker(product, p, (char)8595);
+						}
+						else{
+							u.acceptTicker(product, p, (char) 8593);
+						}
 					}
-					if(oldvalue.greaterThan(p)){
-						u.acceptTicker(product, p, (char)8595);
-						break;
-					}
-					if(oldvalue.lessThan(p)){
-						u.acceptTicker(product, p, (char) 8593);
-					}
-				} else {
+				}
+			} else {
+				for(User u : subscriptions.get(product)){
 					u.acceptTicker(product, p, ' ');
-					tickermap.put(product, p);
 				}
 			}
 		}
+		tickermap.put(product, p);
 	}
 	
 	synchronized HashMap<String, ArrayList<User>> getSubscriptions(){
