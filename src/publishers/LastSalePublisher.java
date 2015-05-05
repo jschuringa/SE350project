@@ -34,7 +34,7 @@ public final class LastSalePublisher extends Publisher {
 					u.acceptLastSale(product, p, v);
 				}
 			}
-			TickerPublisher.publishTicker(product);
+			TickerPublisher.publishTicker(product, p);
 		}
 	}
 }
