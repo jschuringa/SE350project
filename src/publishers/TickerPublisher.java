@@ -23,11 +23,11 @@ public final class TickerPublisher extends Publisher {
 		return instance;
 	}
 
-	public synchronized static void publishTicker(String product, Price p){
+	public synchronized void publishTicker(String product, Price p){
 		if(p == null){
 			p = PriceFactory.makeLimitPrice(0);
 		}
-		if(subscriptions.contains(product)){
+		if(subscriptions.containsKey(product)){
 			for(User u : subscriptions.get(product)){
 				if(tickermap.containsKey(product)){
 					Price oldvalue = tickermap.get(product);
@@ -48,5 +48,10 @@ public final class TickerPublisher extends Publisher {
 				}
 			}
 		}
+	}
+	
+	synchronized HashMap<String, ArrayList<User>> getSubscriptions(){
+		HashMap<String, ArrayList<User>> temp = new HashMap<String, ArrayList<User>>(subscriptions);
+		return temp;
 	}
 }
