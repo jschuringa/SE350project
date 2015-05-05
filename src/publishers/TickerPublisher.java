@@ -7,7 +7,7 @@ import client.User;
 import price.Price;
 import price.PriceFactory;
 
-public class TickerPublisher extends Publisher {
+public final class TickerPublisher extends Publisher {
 	private volatile HashMap<String, ArrayList<User>> subscriptions = super.getSubscriptions();
 	private volatile static HashMap<String, Price> tickermap = new HashMap<String, Price>();
 	private static TickerPublisher instance;
