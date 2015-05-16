@@ -58,6 +58,7 @@ public abstract class Publisher {
 	}
 	
 	synchronized HashMap<String, ArrayList<User>> getSubscriptions(){
-		return subscriptions;
+		HashMap<String, ArrayList<User>> temp = new HashMap<String, ArrayList<User>>(subscriptions);
+		return temp;
 	}
 }

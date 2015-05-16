@@ -6,7 +6,7 @@ import client.User;
 
 public final class CurrentMarketPublisher extends Publisher {
 	
-	private static CurrentMarketPublisher instance;
+	private static volatile CurrentMarketPublisher instance;
 	
 	private CurrentMarketPublisher(){}
 	

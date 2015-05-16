@@ -10,7 +10,7 @@ import price.PriceFactory;
 
 
 public final class LastSalePublisher extends Publisher {
-	private static LastSalePublisher instance;
+	private volatile static LastSalePublisher instance;
 	
 	
 	private LastSalePublisher(){}

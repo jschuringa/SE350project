@@ -11,7 +11,7 @@ import messages.MarketMessage;
 import client.User;
 
 public final class MessagePublisher extends Publisher {
-	private static MessagePublisher instance;
+	private static volatile MessagePublisher instance;
 	
 	private MessagePublisher(){}
 	
