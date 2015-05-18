@@ -12,7 +12,7 @@ public class PriceFactory {
 		value = value.replaceAll("[$,]", "");
 		try{
 			double tempAmount = Double.valueOf(value).doubleValue();
-			long amount = (long) (tempAmount * 100.0);
+			long amount = (long) Math.round(tempAmount * 100.0);
 			if(prices.containsKey(amount))
 				return prices.get(amount);
 			else{

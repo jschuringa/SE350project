@@ -2,7 +2,7 @@ package price;
 
 import exception.InvalidPriceOperation;
 
-public class Price {
+public class Price implements Comparable<Price>{
 	Price(){}
 	
 	public long getValue() throws InvalidPriceOperation {
@@ -21,6 +21,7 @@ public class Price {
 		throw new InvalidPriceOperation("Invalid method on Market Price: multiply()");
 	}
 	
+	@Override
 	public int compareTo(Price p){
 		return -1;
 	}
@@ -56,5 +57,6 @@ public class Price {
 	public String toString(){
 		return "MKT";
 		
-	}	
+	}
 }
+	

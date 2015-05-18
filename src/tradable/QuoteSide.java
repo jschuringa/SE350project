@@ -3,7 +3,7 @@ package tradable;
 import exception.InvalidTradableOperation;
 import price.Price;
 
-class QuoteSide extends Order {
+public class QuoteSide extends Order {
 
 	public QuoteSide(String userName, String productSymbol,
 			Price makeLimitPrice, int originalVolume, BookSide side)

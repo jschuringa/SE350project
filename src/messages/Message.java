@@ -76,7 +76,7 @@ public abstract class Message {
 		return volume;
 	}
 	
-	private void setVolume(int volume) throws InvalidMessageException{
+	public void setVolume(int volume) throws InvalidMessageException{
 		if(volume >= 0)
 			this.volume = volume;
 		else
@@ -87,7 +87,7 @@ public abstract class Message {
 		return details;
 	}
 	
-	private void setDetails(String details) throws InvalidMessageException {
+	public void setDetails(String details) throws InvalidMessageException {
 		if(details == null)
 			throw new InvalidMessageException("Details cannot be null");
 		if(details.trim().isEmpty())

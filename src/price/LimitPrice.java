@@ -2,7 +2,7 @@ package price;
 
 import exception.InvalidPriceOperation;
 
-public class LimitPrice extends Price{
+public class LimitPrice extends Price implements Comparable<Price>{
 	private final long value;
 	
 	LimitPrice(long value){
@@ -25,6 +25,7 @@ public class LimitPrice extends Price{
 		return PriceFactory.makeLimitPrice(this.value * p);
 	}
 	
+	@Override
 	public int compareTo(Price p){
 		if(this.equals(p))
 			return 0;
