@@ -156,7 +156,7 @@ public class ProductBook {
 		updateCurrentMarket();
 	}
 	
-	public synchronized void cancelOrder(BookSide side, String orderId) throws OrderNotFoundException{
+	public synchronized void cancelOrder(BookSide side, String orderId) throws OrderNotFoundException, InvalidMessageException{
 		if(side == BookSide.BUY){
 			buy.submitOrderCancel(orderId);
 		}

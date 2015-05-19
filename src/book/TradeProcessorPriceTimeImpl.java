@@ -109,7 +109,7 @@ public class TradeProcessorPriceTimeImpl implements TradeProcessor {
 		for (Tradable t : tradedOut){
 			entriesAtPrice.remove(t);
 			if (entriesAtPrice.isEmpty()){
-				ProductBook.clearIfEmpty(ProductBookSide.topOfBookPrice());
+				ProductBookSide.clearIfEmpty(ProductBookSide.topOfBookPrice());
 			}
 		}
 		return fillMessages;
