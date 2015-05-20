@@ -150,7 +150,7 @@ public class ProductBook {
 		}
 	}
 	
-	public synchronized void closeMarket() throws OrderNotFoundException{
+	public synchronized void closeMarket() throws OrderNotFoundException, InvalidMessageException{
 		buy.cancelAll();
 		sell.cancelAll();
 		updateCurrentMarket();
