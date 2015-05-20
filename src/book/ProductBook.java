@@ -33,7 +33,7 @@ public class ProductBook {
 	private final ProductBookSide sell;
 	private volatile String lastCurrentMarket;
 	private volatile HashSet<String> userQuotes = new HashSet<>();
-	private volatile HashMap<Price, ArrayList<Tradable>> oldEntries = new HashMap< Price, ArrayList<Tradable>>();
+	private volatile static HashMap<Price, ArrayList<Tradable>> oldEntries = new HashMap< Price, ArrayList<Tradable>>();
 	
 	ProductBook(String product) throws InvalidBookOperation{
 		this.product = setProduct(product);
@@ -98,7 +98,7 @@ public class ProductBook {
 		return new MarketDataDTO(this.product, bestBuy, bestBuyVol, bestSell, bestSellVol);
 	}
 	
-	public synchronized void addOldEntry(Tradable t){
+	public synchronized static void addOldEntry(Tradable t){
 		if(!oldEntries.containsKey(t.getPrice())){
 			oldEntries.put(t.getPrice(), new ArrayList<Tradable>());
 		}
@@ -150,13 +150,13 @@ public class ProductBook {
 		}
 	}
 	
-	public synchronized void closeMarket() throws OrderNotFoundException{
+	public synchronized void closeMarket() throws OrderNotFoundException, InvalidMessageException{
 		buy.cancelAll();
 		sell.cancelAll();
 		updateCurrentMarket();
 	}
 	
-	public synchronized void cancelOrder(BookSide side, String orderId) throws OrderNotFoundException{
+	public synchronized void cancelOrder(BookSide side, String orderId) throws OrderNotFoundException, InvalidMessageException{
 		if(side == BookSide.BUY){
 			buy.submitOrderCancel(orderId);
 		}
