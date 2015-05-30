@@ -26,7 +26,7 @@ public final class ProductService {
 	
 	private HashMap<String, ProductBook> allBooks = new HashMap<String, ProductBook>();
 	private MarketState currentMarketState = MarketState.CLOSED;
-	private static ProductService instance;
+	private static volatile ProductService instance;
 	
 	private ProductService()
 	{
