@@ -57,17 +57,17 @@ public class UserCommandService {
 		}
 	}
 	
-	private void validateUserName(String userName) throws UserNotConnectedException{
+	private void validateUserName(String userName) throws DataValidationException{
 		if(userName == null)
-			throw new UserNotConnectedException("User cannot be null");
+			throw new DataValidationException("User cannot be null");
 		Pattern p = Pattern.compile("[a-zA-Z][a-zA-Z0-9]*");
 		Matcher m = p.matcher(userName);
 		if(!m.matches() ){
-			throw new UserNotConnectedException("User name invalid: " + userName);
+			throw new DataValidationException("User name invalid: " + userName);
 		}
 	}
 	
-	private void verifyUser(String userName, long connId) throws UserNotConnectedException, InvalidConnectionIdException{
+	private void verifyUser(String userName, long connId) throws UserNotConnectedException, InvalidConnectionIdException, DataValidationException{
 		validateUserName(userName);
 		if(!connectedUserIds.containsKey(userName)){
 			throw new UserNotConnectedException(userName);
@@ -77,7 +77,7 @@ public class UserCommandService {
 		}
 	}
 	
-	public synchronized long connect(User user) throws DataValidationException, UserNotConnectedException, AlreadyConnectedException{
+	public synchronized long connect(User user) throws DataValidationException, AlreadyConnectedException{
 		if(user == null){
 			throw new DataValidationException("User cannot be null");
 		}
@@ -92,7 +92,7 @@ public class UserCommandService {
 		return connectedUserIds.get(userName);
 	}
 	
-	public synchronized void disConnect(String userName, long connId) throws UserNotConnectedException, InvalidConnectionIdException{
+	public synchronized void disConnect(String userName, long connId) throws UserNotConnectedException, InvalidConnectionIdException, DataValidationException{
 		verifyUser(userName, connId);
 		connectedUserIds.remove(userName);
 		connectedUsers.remove(userName);
@@ -107,7 +107,7 @@ public class UserCommandService {
 		return ProductService.getInstance().getBookDepth(product);
 	}
 	
-	public String getMarketState(String userName, long connId) throws UserNotConnectedException, InvalidConnectionIdException{
+	public String getMarketState(String userName, long connId) throws UserNotConnectedException, InvalidConnectionIdException, DataValidationException{
 		synchronized(this){
 			verifyUser(userName, connId);
 		}
@@ -120,7 +120,7 @@ public class UserCommandService {
 		return ProductService.getInstance().getOrdersWithRemainingQty(userName, product);
 	}
 	
-	public ArrayList<String> getProducts(String userName, long connId) throws UserNotConnectedException, InvalidConnectionIdException{
+	public ArrayList<String> getProducts(String userName, long connId) throws UserNotConnectedException, InvalidConnectionIdException, DataValidationException{
 		synchronized(this){
 			verifyUser(userName, connId);
 		}
@@ -129,7 +129,7 @@ public class UserCommandService {
 		return products;
 	}
 	
-	public String submitOrder(String userName, long connId, String product, Price price, int volume, BookSide side) throws InvalidTradableOperation, UserNotConnectedException, InvalidConnectionIdException, InvalidMarketStateException, NoSuchProductException, InvalidMessageException{
+	public String submitOrder(String userName, long connId, String product, Price price, int volume, BookSide side) throws InvalidTradableOperation, UserNotConnectedException, InvalidConnectionIdException, InvalidMarketStateException, NoSuchProductException, InvalidMessageException, DataValidationException{
 		synchronized(this){
 			verifyUser(userName, connId);
 		}
@@ -138,7 +138,7 @@ public class UserCommandService {
 		return o.getId();
 	}
 	
-	public void submitOrderCancel(String userName, long connId, String product, BookSide side, String orderId) throws UserNotConnectedException, InvalidConnectionIdException, InvalidMarketStateException, NoSuchProductException, OrderNotFoundException, InvalidMessageException{
+	public void submitOrderCancel(String userName, long connId, String product, BookSide side, String orderId) throws UserNotConnectedException, InvalidConnectionIdException, InvalidMarketStateException, NoSuchProductException, OrderNotFoundException, InvalidMessageException, DataValidationException{
 		synchronized(this){
 			verifyUser(userName, connId);
 		}
@@ -153,63 +153,63 @@ public class UserCommandService {
 		ProductService.getInstance().submitQuote(q);
 	}
 	
-	public void submitQuoteCancel(String userName, long connId, String product) throws UserNotConnectedException, InvalidConnectionIdException, InvalidMarketStateException, NoSuchProductException{
+	public void submitQuoteCancel(String userName, long connId, String product) throws UserNotConnectedException, InvalidConnectionIdException, InvalidMarketStateException, NoSuchProductException, DataValidationException{
 		synchronized(this){
 			verifyUser(userName, connId);
 		}
 		ProductService.getInstance().submitQuoteCancel(userName, product);
 	}
 	
-	public void subscribeCurrentMarket(String userName, long connId, String product) throws UserNotConnectedException, InvalidConnectionIdException, AlreadySubscribedException, InvalidSubscriptionException{
+	public void subscribeCurrentMarket(String userName, long connId, String product) throws UserNotConnectedException, InvalidConnectionIdException, AlreadySubscribedException, InvalidSubscriptionException, DataValidationException{
 		synchronized(this){
 			verifyUser(userName, connId);
 		}
 		CurrentMarketPublisher.getInstance().subscribe(connectedUsers.get(userName), product);
 	}
 	
-	public void subscribeLastSale(String userName, long connId, String product) throws UserNotConnectedException, InvalidConnectionIdException, AlreadySubscribedException, InvalidSubscriptionException{
+	public void subscribeLastSale(String userName, long connId, String product) throws UserNotConnectedException, InvalidConnectionIdException, AlreadySubscribedException, InvalidSubscriptionException, DataValidationException{
 		synchronized(this){
 			verifyUser(userName, connId);
 		}
 		LastSalePublisher.getInstance().subscribe(connectedUsers.get(userName), product);
 	}
 	
-	public void subscribeMessages(String userName, long conn, String product) throws UserNotConnectedException, InvalidConnectionIdException, AlreadySubscribedException, InvalidSubscriptionException{
+	public void subscribeMessages(String userName, long conn, String product) throws UserNotConnectedException, InvalidConnectionIdException, AlreadySubscribedException, InvalidSubscriptionException, DataValidationException{
 		synchronized(this){
 			verifyUser(userName, conn);
 		}
 		MessagePublisher.getInstance().subscribe(connectedUsers.get(userName), product);
 	}
 	
-	public void subscribeTicker(String userName, long conn, String product) throws UserNotConnectedException, InvalidConnectionIdException, AlreadySubscribedException, InvalidSubscriptionException{
+	public void subscribeTicker(String userName, long conn, String product) throws UserNotConnectedException, InvalidConnectionIdException, AlreadySubscribedException, InvalidSubscriptionException, DataValidationException{
 		synchronized(this){
 			verifyUser(userName, conn);
 		}
 		TickerPublisher.getInstance().subscribe(connectedUsers.get(userName), product);
 	}
 	
-	public void unSubscribeCurrentMarket(String userName, long connId, String product) throws UserNotConnectedException, InvalidConnectionIdException, InvalidSubscriptionException, NotSubscribedException{
+	public void unSubscribeCurrentMarket(String userName, long connId, String product) throws UserNotConnectedException, InvalidConnectionIdException, InvalidSubscriptionException, NotSubscribedException, DataValidationException{
 		synchronized(this){
 			verifyUser(userName, connId);
 		}
 		CurrentMarketPublisher.getInstance().unSubscribe(connectedUsers.get(userName), product);
 	}
 	
-	public void unSubscribeLastSale(String userName, long connId, String product) throws UserNotConnectedException, InvalidConnectionIdException, InvalidSubscriptionException, NotSubscribedException{
+	public void unSubscribeLastSale(String userName, long connId, String product) throws UserNotConnectedException, InvalidConnectionIdException, InvalidSubscriptionException, NotSubscribedException, DataValidationException{
 		synchronized(this){
 			verifyUser(userName, connId);
 		}
 		LastSalePublisher.getInstance().unSubscribe(connectedUsers.get(userName), product);
 	}
 	
-	public void unSubscribeMessages(String userName, long conn, String product) throws UserNotConnectedException, InvalidConnectionIdException, InvalidSubscriptionException, NotSubscribedException{
+	public void unSubscribeMessages(String userName, long conn, String product) throws UserNotConnectedException, InvalidConnectionIdException, InvalidSubscriptionException, NotSubscribedException, DataValidationException{
 		synchronized(this){
 			verifyUser(userName, conn);
 		}
 		MessagePublisher.getInstance().unSubscribe(connectedUsers.get(userName), product);
 	}
 	
-	public void unSubscribeTicker(String userName, long conn, String product) throws UserNotConnectedException, InvalidConnectionIdException, InvalidSubscriptionException, NotSubscribedException{
+	public void unSubscribeTicker(String userName, long conn, String product) throws UserNotConnectedException, InvalidConnectionIdException, InvalidSubscriptionException, NotSubscribedException, DataValidationException{
 		synchronized(this){
 			verifyUser(userName, conn);
 		}

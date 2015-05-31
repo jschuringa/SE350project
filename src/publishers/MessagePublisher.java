@@ -9,6 +9,7 @@ import messages.CancelMessage;
 import messages.FillMessage;
 import messages.MarketMessage;
 import client.User;
+import exception.InvalidMessageException;
 
 public final class MessagePublisher extends Publisher {
 	private static volatile MessagePublisher instance;

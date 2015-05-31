@@ -8,7 +8,13 @@ import messages.MarketMessageFactory;
 import messages.MarketState;
 import client.TradableUserData;
 import client.User;
+import exception.AlreadySubscribedException;
+import exception.DataValidationException;
+import exception.InvalidConnectionIdException;
 import exception.InvalidPriceOperation;
+import exception.InvalidSubscriptionException;
+import exception.NotSubscribedException;
+import exception.UserNotConnectedException;
 import price.Price;
 import price.PriceFactory;
 import publishers.CurrentMarketPublisher;
@@ -457,6 +463,51 @@ public class Phase2Main {
 		public ArrayList<TradableDTO> getOrdersWithRemainingQty(String product) {
 			// TODO Auto-generated method stub
 			return null;
+		}
+
+		@Override
+		public void subscribeCurrentMarket(String product)
+				throws UserNotConnectedException, InvalidConnectionIdException,
+				AlreadySubscribedException, InvalidSubscriptionException,
+				DataValidationException {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void unSubscribeCurrentMarket(String product)
+				throws UserNotConnectedException, InvalidConnectionIdException,
+				InvalidSubscriptionException, NotSubscribedException,
+				DataValidationException {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void unSubscribeLastSale(String product)
+				throws UserNotConnectedException, InvalidConnectionIdException,
+				InvalidSubscriptionException, NotSubscribedException,
+				DataValidationException {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void unSubscribeMessages(String product)
+				throws UserNotConnectedException, InvalidConnectionIdException,
+				InvalidSubscriptionException, NotSubscribedException,
+				DataValidationException {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void unSubscribeTicker(String product)
+				throws UserNotConnectedException, InvalidConnectionIdException,
+				InvalidSubscriptionException, NotSubscribedException,
+				DataValidationException {
+			// TODO Auto-generated method stub
+			
 		}
     }
 }
