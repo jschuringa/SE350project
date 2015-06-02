@@ -5,6 +5,7 @@
 package gui;
 
 import client.User;
+import exception.InvalidPriceOperation;
 import price.Price;
 
 /**
@@ -25,11 +26,11 @@ public class UserDisplayManager {
         marketDisplay.setVisible(true);
     }
 
-    public void updateMarketData(String product, Price bp, int bv, Price sp, int sv) {
+    public void updateMarketData(String product, Price bp, int bv, Price sp, int sv) throws InvalidPriceOperation {
         marketDisplay.updateMarketData(product, bp, bv, sp, sv);
     }
     
-    public void updateLastSale(String product, Price p, int v) {
+    public void updateLastSale(String product, Price p, int v) throws InvalidPriceOperation {
         marketDisplay.updateLastSale(product, p, v);
     }
     

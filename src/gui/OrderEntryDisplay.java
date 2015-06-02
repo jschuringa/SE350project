@@ -5,8 +5,10 @@
 package gui;
 
 import javax.swing.JOptionPane;
+
 import price.Price;
 import price.PriceFactory;
+import tradable.BookSide;
 
 
 /**
@@ -211,7 +213,7 @@ public class OrderEntryDisplay extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(this, "Invalid Numeric value for " + field + " field: " + value, "Invalid Numeric Data", JOptionPane.ERROR_MESSAGE);
                 return;
             }
-            BookSide side = (buyRadio.isSelected() ? <BUY> : <SELL>);  // This should match your format for storing a side - enum, String, etc
+            BookSide side = (buyRadio.isSelected() ? BookSide.BUY : BookSide.SELL);  // This should match your format for storing a side - enum, String, etc
 
             Price price = mktCheck.isSelected() ? PriceFactory.makeMarketPrice() : PriceFactory.makeLimitPrice(buyPrice);
             marketDisplay.getUser().submitOrder(product, price, v, side);

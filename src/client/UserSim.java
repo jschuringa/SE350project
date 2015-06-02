@@ -1,12 +1,17 @@
 package client;
 
 import driver.MainAutomatedTest;
+import exception.DataValidationException;
+import exception.InvalidPriceOperation;
+
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import price.Price;
 import price.PriceFactory;
-import product.ProductService;
+import tradable.BookSide;
+import book.ProductService;
 
 public class UserSim implements Runnable {
 
@@ -51,7 +56,7 @@ public class UserSim implements Runnable {
         return bookDepthCount;
     }
 
-    public Price getNetAccountValue() {
+    public Price getNetAccountValue() throws InvalidPriceOperation, DataValidationException {
         return user.getNetAccountValue();
     }
 
@@ -168,10 +173,10 @@ public class UserSim implements Runnable {
     private void makeQuote() throws Exception {
         ArrayList<String> list = user.getProductList();
         String product = list.get((int) (Math.random() * list.size()));
-        Price bp = makeRandomPrice(<BUY>, product); // This should match your format for storing a side - enum, String, etc
+        Price bp = makeRandomPrice(BookSide.BUY, product); // This should match your format for storing a side - enum, String, etc
         int bv = makeRandomVolume(product);
 
-        Price sp = makeRandomPrice(<SELL>, product); // This should match your format for storing a side - enum, String, etc
+        Price sp = makeRandomPrice(BookSide.SELL, product); // This should match your format for storing a side - enum, String, etc
         int sv = makeRandomVolume(product);
 
 
@@ -189,13 +194,13 @@ public class UserSim implements Runnable {
 
     private BookSide makeRandomSide() { // This should match your format for storing a side - enum, String, etc
         if (Math.random() < 0.5) {
-            return <BUY>; // This should match your format for storing a side - enum, String, etc
+            return BookSide.BUY; // This should match your format for storing a side - enum, String, etc
         } else {
-            return <SELL>; // This should match your format for storing a side - enum, String, etc
+            return BookSide.SELL; // This should match your format for storing a side - enum, String, etc
         } 
     }
 
-    private Price makeRandomOrderPrice(BookSide side, String product) { // This should match your format for storing a side - enum, String, etc
+    private Price makeRandomOrderPrice(BookSide side, String product) throws InvalidPriceOperation { // This should match your format for storing a side - enum, String, etc
 
         if (Math.random() < 0.1) {
             return PriceFactory.makeMarketPrice();
@@ -204,9 +209,9 @@ public class UserSim implements Runnable {
         }
     }
 
-    private Price makeRandomPrice(BookSide side, String product) { // This should match your format for storing a side - enum, String, etc
+    private Price makeRandomPrice(BookSide side, String product) throws InvalidPriceOperation { // This should match your format for storing a side - enum, String, etc
 
-        double priceBase = (side == <BUY> ? UserSimSettings.getBuyPriceBase(product) : UserSimSettings.getSellPriceBase(product)); // This should match your format for storing a side - enum, String, etc
+        double priceBase = (side == BookSide.BUY ? UserSimSettings.getBuyPriceBase(product) : UserSimSettings.getSellPriceBase(product)); // This should match your format for storing a side - enum, String, etc
 
         double price = priceBase * (1 - UserSimSettings.priceVariance);
         price += priceBase * (UserSimSettings.priceVariance * 2) * Math.random();

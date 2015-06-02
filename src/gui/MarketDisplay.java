@@ -5,6 +5,7 @@
 package gui;
 
 import client.User;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -14,6 +15,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
@@ -22,9 +24,11 @@ import javax.swing.JSeparator;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
+import exception.DataValidationException;
+import exception.InvalidPriceOperation;
 import price.Price;
 import price.PriceFactory;
-import product.ProductService;
+import book.ProductService;
 import publishers.MarketDataDTO;
 
 
@@ -157,7 +161,15 @@ public class MarketDisplay extends javax.swing.JFrame {
         jButton1.setText("Position");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                try {
+					jButton1ActionPerformed(evt);
+				} catch (InvalidPriceOperation e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (DataValidationException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
             }
         });
 
@@ -368,7 +380,7 @@ public class MarketDisplay extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_symbolComboActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) throws InvalidPriceOperation, DataValidationException {//GEN-FIRST:event_jButton1ActionPerformed
         positionDisplay.updateAccountBalance(user.getAccountCosts());
         positionDisplay.updateStockValue(user.getAllStockValue());
         positionDisplay.updateAccountValue(user.getNetAccountValue());
@@ -386,7 +398,7 @@ public class MarketDisplay extends javax.swing.JFrame {
         positionDisplay.setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    void updateMarketData(String product, Price bp, int bv, Price sp, int sv) {
+    void updateMarketData(String product, Price bp, int bv, Price sp, int sv) throws InvalidPriceOperation {
         int row = getRowForProduct(product);
         if (row < 0) {
             return;
@@ -410,7 +422,7 @@ public class MarketDisplay extends javax.swing.JFrame {
         ((DefaultTableModel) marketTable.getModel()).setValueAt(sv, row, 5);
     }
 
-    void updateLastSale(String product, Price p, int v) {
+    void updateLastSale(String product, Price p, int v) throws InvalidPriceOperation {
 
         int row = getRowForProduct(product);
         if (row < 0) {
