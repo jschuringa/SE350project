@@ -35,7 +35,7 @@ public class UserImpl implements User {
 	Position position;
 	UserDisplayManager display;
 	
-	public UserImpl(String uName) throws DataValidationException{
+	public UserImpl(String uName) throws DataValidationException, InvalidPriceOperation{
 		userName = setUserName(uName);
 		position = new Position();
 	}
@@ -63,14 +63,14 @@ public class UserImpl implements User {
 	}
 
 	@Override
-	public void acceptLastSale(String product, Price p, int v) {
-		//isConnected();
-		display.updateLastSale(product, p, v);
-		try {
-			position.updateLastSale(product, p);
-		} catch (DataValidationException e) {
+	public void acceptLastSale(String product, Price p, int v) throws UserNotConnectedException {
+		try{
+			isConnected();
+		} catch (UserNotConnectedException e){
 			System.out.println(e.getMessage());
 		}
+		display.updateLastSale(product, p, v);
+		position.updateLastSale(product, p);
 	}
 
 	@Override
@@ -98,8 +98,6 @@ public class UserImpl implements User {
 		display.updateMarketActivity(summary.toString());
 		try {
 			position.updatePosition(fm.getProduct(), fm.getPrice(), fm.getBookSide(), fm.getVolume());
-		} catch (DataValidationException e) {
-			System.out.println(e.getMessage());
 		} catch (InvalidPriceOperation e) {
 			System.out.println(e.getMessage());
 		}

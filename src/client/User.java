@@ -25,7 +25,7 @@ public interface User {
 	
 	public String getUserName();
 	
-	public void acceptLastSale(String product, Price p, int v);
+	public void acceptLastSale(String product, Price p, int v) throws UserNotConnectedException;
 	
 	public void acceptMessage(FillMessage fm);
 	
