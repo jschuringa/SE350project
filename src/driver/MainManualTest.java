@@ -3,18 +3,24 @@ package driver;
 
 import client.User;
 import client.UserImpl;
+
 import java.util.concurrent.CountDownLatch;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import javax.swing.JOptionPane;
-import product.ProductService;
+
+import exception.DataValidationException;
+import exception.InvalidPriceOperation;
+import messages.MarketState;
+import book.ProductService;
 
 
 public class MainManualTest {
 
     public static CountDownLatch countDownLatch;
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws DataValidationException, InvalidPriceOperation {
         setupTradingSystem();
         manualTestMode();
     }
@@ -28,14 +34,14 @@ public class MainManualTest {
             ProductService.getInstance().createProduct("AAPL");
             ProductService.getInstance().createProduct("GE");
             ProductService.getInstance().createProduct("T");
-            ProductService.getInstance().setMarketState(<PREOPEN>); // Replace PREOPEN with your preresenation of PREOPEN
-            ProductService.getInstance().setMarketState(<OPEN>);  // Replace OPEN with your preresenation of OPEN
+            ProductService.getInstance().setMarketState(MarketState.PREOPEN); // Replace PREOPEN with your preresenation of PREOPEN
+            ProductService.getInstance().setMarketState(MarketState.OPEN);  // Replace OPEN with your preresenation of OPEN
         } catch (Exception ex) {
             Logger.getLogger(MainManualTest.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
-    private static void manualTestMode() {
+    private static void manualTestMode() throws DataValidationException, InvalidPriceOperation {
 
         String name = "REX";
         boolean goodName = false;

@@ -4,17 +4,23 @@ import client.User;
 import client.UserImpl;
 import client.UserSim;
 import client.UserSimSettings;
+
 import java.util.concurrent.CountDownLatch;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import javax.swing.JOptionPane;
-import product.ProductService;
+
+import exception.DataValidationException;
+import exception.InvalidPriceOperation;
+import messages.MarketState;
+import book.ProductService;
 
 public class MainAutomatedTest {
 
     public static CountDownLatch countDownLatch;
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws DataValidationException, InvalidPriceOperation {
 
         setupTradingSystem();
         automatedTestMode();
@@ -38,7 +44,7 @@ public class MainAutomatedTest {
         }
     }
 
-    private static void automatedTestMode() {
+    private static void automatedTestMode() throws DataValidationException, InvalidPriceOperation {
 
         String name = "REX";
         boolean goodName = false;
@@ -97,7 +103,7 @@ public class MainAutomatedTest {
             Logger.getLogger(MainAutomatedTest.class.getName()).log(Level.SEVERE, null, ex);
         }
         try {
-            ProductService.getInstance().setMarketState(<PREOPEN>); // Replace PREOPEN with your preresenation of PREOPEN
+            ProductService.getInstance().setMarketState(MarketState.PREOPEN); // Replace PREOPEN with your preresenation of PREOPEN
         } catch (Exception ex) {
             Logger.getLogger(MainAutomatedTest.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -109,7 +115,7 @@ public class MainAutomatedTest {
             Logger.getLogger(MainAutomatedTest.class.getName()).log(Level.SEVERE, null, ex);
         }
         try {
-            ProductService.getInstance().setMarketState(<OPEN>); // Replace OPEN with your preresenation of OPEN
+            ProductService.getInstance().setMarketState(MarketState.OPEN); // Replace OPEN with your preresenation of OPEN
         } catch (Exception ex) {
             Logger.getLogger(MainAutomatedTest.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -142,7 +148,7 @@ public class MainAutomatedTest {
         try {
             countDownLatch.await();
             System.out.println("Done Waiting");
-            ProductService.getInstance().setMarketState(<CLOSED>); // Replace CLOSED with your preresenation of CLOSED
+            ProductService.getInstance().setMarketState(MarketState.CLOSED); // Replace CLOSED with your preresenation of CLOSED
             JOptionPane.showMessageDialog(null, "The simulation has completed.",
                     "Completed", JOptionPane.INFORMATION_MESSAGE);
 
