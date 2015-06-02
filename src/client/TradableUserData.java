@@ -90,5 +90,11 @@ public class TradableUserData {
 			throw new InvalidTradableOperation("Side cannot be null");
 		}
 	}
+	
+	public String toString()
+	{
+		return "User " + this.userName + ", " + this.side.toString() + " " + this.stockSymbol + " (" + this.orderID + ")";
+		
+	}
 
 }
