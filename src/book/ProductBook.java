@@ -15,6 +15,7 @@ import exception.InvalidBookOperation;
 import exception.InvalidMessageException;
 import exception.InvalidTradableOperation;
 import exception.OrderNotFoundException;
+import exception.UserNotConnectedException;
 import price.Price;
 import price.PriceFactory;
 import publishers.CurrentMarketPublisher;
@@ -113,7 +114,7 @@ public class ProductBook {
 		oldEntries.get(t.getPrice()).add(t);
 	}
 	
-	public synchronized void openMarket() throws InvalidMessageException, InvalidTradableOperation{
+	public synchronized void openMarket() throws InvalidMessageException, InvalidTradableOperation, UserNotConnectedException{
 		Price buyPrice = buy.topOfBookPrice();
 		if(buyPrice == null){
 			return;
@@ -172,7 +173,7 @@ public class ProductBook {
 		updateCurrentMarket();
 	}
 	
-	public synchronized void addToBook(Quote q) throws DataValidationException, InvalidTradableOperation, InvalidMessageException{
+	public synchronized void addToBook(Quote q) throws DataValidationException, InvalidTradableOperation, InvalidMessageException, UserNotConnectedException{
 		if(q.getQuoteSide(BookSide.SELL).getPrice().lessOrEqual(q.getQuoteSide(BookSide.BUY).getPrice())){
 			throw new DataValidationException("Quote " + q.toString() + "sell side is less or equal to buy side");
 		}
@@ -190,7 +191,7 @@ public class ProductBook {
 		updateCurrentMarket();
 	}
 	
-	public synchronized void addToBook(Order o) throws InvalidMessageException, InvalidTradableOperation{
+	public synchronized void addToBook(Order o) throws InvalidMessageException, InvalidTradableOperation, UserNotConnectedException{
 		addToBook(o.getSide(), o);
 		updateCurrentMarket();
 	}
@@ -243,7 +244,7 @@ public class ProductBook {
 		return msgs.get(0).getVolume();
 	}
 	
-	private synchronized void addToBook(BookSide side, Tradable trd) throws InvalidMessageException, InvalidTradableOperation{
+	private synchronized void addToBook(BookSide side, Tradable trd) throws InvalidMessageException, InvalidTradableOperation, UserNotConnectedException{
 		if(ProductService.getInstance().getMarketState() == MarketState.PREOPEN){
 			if(side == BookSide.BUY){
 				buy.addToBook(trd);

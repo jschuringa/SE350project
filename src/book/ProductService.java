@@ -12,6 +12,7 @@ import exception.InvalidTradableOperation;
 import exception.NoSuchProductException;
 import exception.OrderNotFoundException;
 import exception.ProductAlreadyExistsException;
+import exception.UserNotConnectedException;
 import messages.MarketMessage;
 import messages.MarketState;
 import publishers.MarketDataDTO;
@@ -78,7 +79,7 @@ public final class ProductService {
 		return new ArrayList<String>(allBooks.keySet());
 	}
 	
-	public synchronized void setMarketState(MarketState ms) throws InvalidMarketStateTransition, InvalidMessageException, InvalidTradableOperation, OrderNotFoundException
+	public synchronized void setMarketState(MarketState ms) throws InvalidMarketStateTransition, InvalidMessageException, InvalidTradableOperation, OrderNotFoundException, UserNotConnectedException
 	{
 		if (currentMarketState == MarketState.CLOSED && ms == MarketState.PREOPEN)
 		{
@@ -122,7 +123,7 @@ public final class ProductService {
 		allBooks.put(product, pb);
 	}
 	
-	public synchronized void submitQuote(Quote q) throws InvalidMarketStateException, NoSuchProductException, DataValidationException, InvalidTradableOperation, InvalidMessageException
+	public synchronized void submitQuote(Quote q) throws InvalidMarketStateException, NoSuchProductException, DataValidationException, InvalidTradableOperation, InvalidMessageException, UserNotConnectedException
 	{
 		if (currentMarketState == MarketState.CLOSED)
 			throw new InvalidMarketStateException();
@@ -134,7 +135,7 @@ public final class ProductService {
 		temp.addToBook(q);
 	}
 	
-	public synchronized void submitOrder(Order o) throws InvalidMarketStateException, NoSuchProductException, InvalidMessageException, InvalidTradableOperation
+	public synchronized void submitOrder(Order o) throws InvalidMarketStateException, NoSuchProductException, InvalidMessageException, InvalidTradableOperation, UserNotConnectedException
 	{
 		if (currentMarketState == MarketState.CLOSED)
 			throw new InvalidMarketStateException();

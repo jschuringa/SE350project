@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import client.User;
+import exception.UserNotConnectedException;
 import price.Price;
 import price.PriceFactory;
 
@@ -25,7 +26,7 @@ public final class LastSalePublisher extends Publisher {
 	}
 	
 	
-	public synchronized void publishLastSale(String product, Price p, int v){
+	public synchronized void publishLastSale(String product, Price p, int v) throws UserNotConnectedException{
 		HashMap<String, ArrayList<User>> subs = super.getSubscriptions();
 		if(subs.containsKey(product)){
 			for(User u : subs.get(product)){

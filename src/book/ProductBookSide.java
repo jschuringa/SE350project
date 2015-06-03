@@ -20,7 +20,7 @@ import tradable.TradableDTO;
 public class ProductBookSide {
 	private final ProductBook parent;
 	private final BookSide side;
-	private volatile HashMap<Price, ArrayList<Tradable>> bookEntries = new HashMap< Price, ArrayList<Tradable>>();
+	private HashMap<Price, ArrayList<Tradable>> bookEntries = new HashMap< Price, ArrayList<Tradable>>();
 	private final TradeProcessor processor;
 	
 	ProductBookSide(ProductBook parent, BookSide side) throws InvalidBookOperation{

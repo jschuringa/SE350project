@@ -18,8 +18,8 @@ public class TradableUserData {
 	public TradableUserData(String userName, String stockSymbol, String orderID, BookSide side) throws InvalidTradableOperation, OrderNotFoundException
 	{
 		this.userName = setUserName(userName);
-		this.stockSymbol = setStockSymbol(stockSymbol);
-		this.orderID = setOrderID(orderID);
+		this.stockSymbol = setProduct(stockSymbol);
+		this.orderID = setOrderId(orderID);
 		this.side = setBookSide(side);
 	}
 	
@@ -28,12 +28,12 @@ public class TradableUserData {
 		return this.userName;
 	}
 	
-	public String getStockSymbol()
+	public String getProduct()
 	{
 		return this.stockSymbol;
 	}
 	
-	public String getOrderID()
+	public String getOrderId()
 	{
 		return this.orderID;
 	}
@@ -55,7 +55,7 @@ public class TradableUserData {
 		}
 	}
 	
-	private String setStockSymbol(String stockSymbol) throws InvalidTradableOperation
+	private String setProduct(String stockSymbol) throws InvalidTradableOperation
 	{
 		Pattern p = Pattern.compile("[a-zA-Z]{1,4}");
 		Matcher m = p.matcher(stockSymbol);
@@ -68,7 +68,7 @@ public class TradableUserData {
 		}
 	}
 	
-	private String setOrderID(String orderID) throws InvalidTradableOperation, OrderNotFoundException
+	private String setOrderId(String orderID) throws InvalidTradableOperation, OrderNotFoundException
 	{
 		if(orderID != null)
 		{
@@ -89,6 +89,12 @@ public class TradableUserData {
 		else{
 			throw new InvalidTradableOperation("Side cannot be null");
 		}
+	}
+	
+	public String toString()
+	{
+		return "User " + this.userName + ", " + this.side.toString() + " " + this.stockSymbol + " (" + this.orderID + ")";
+		
 	}
 
 }
