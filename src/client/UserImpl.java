@@ -65,7 +65,11 @@ public class UserImpl implements User {
 	@Override
 	public void acceptLastSale(String product, Price p, int v) {
 		//isConnected();
-		display.updateLastSale(product, p, v);
+		try {
+			display.updateLastSale(product, p, v);
+		} catch (InvalidPriceOperation e1) {
+			System.out.println(e1.getMessage());
+		}
 		try {
 			position.updateLastSale(product, p);
 		} catch (DataValidationException e) {
@@ -92,9 +96,10 @@ public class UserImpl implements User {
 		summary.append(fm.getPrice().toString());
 		summary.append(" ");
 		summary.append(fm.getDetails());
-		summary.append(" [");
+		summary.append(" [Tradable Id: ");
 		summary.append(fm.getId());
 		summary.append("]");
+		summary.append("\n");
 		display.updateMarketActivity(summary.toString());
 		try {
 			position.updatePosition(fm.getProduct(), fm.getPrice(), fm.getBookSide(), fm.getVolume());
@@ -124,9 +129,10 @@ public class UserImpl implements User {
 		summary.append(cm.getPrice().toString());
 		summary.append(" ");
 		summary.append(cm.getDetails());
-		summary.append(" [");
+		summary.append(" [Tradable Id: ");
 		summary.append(cm.getId());
 		summary.append("]");
+		summary.append("\n");
 		display.updateMarketActivity(summary.toString());
 	}
 
@@ -143,13 +149,18 @@ public class UserImpl implements User {
 	@Override
 	public void acceptCurrentMarket(String product, Price bp, int bv, Price sp,
 			int sv) {
-		display.updateMarketData(product, bp, bv, sp, sv);
+		try {
+			display.updateMarketData(product, bp, bv, sp, sv);
+		} catch (InvalidPriceOperation e) {
+			System.out.println(e.getMessage());
+		}
 	}
 
 	@Override
 	public void connect() throws DataValidationException, UserNotConnectedException, AlreadyConnectedException, InvalidConnectionIdException {
 		connectionId = UserCommandService.getInstance().connect(this);
 		stocks = UserCommandService.getInstance().getProducts(userName, connectionId);
+		display = new UserDisplayManager(this);
 	}
 
 	@Override

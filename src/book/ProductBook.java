@@ -231,7 +231,6 @@ public class ProductBook {
 		}
 		ArrayList<FillMessage> msgs = new ArrayList<>(fills.values());
 		Collections.sort(msgs);
-		Collections.reverse(msgs);
 		return msgs.get(0).getPrice();
 	}
 	
